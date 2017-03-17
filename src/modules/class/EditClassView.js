@@ -2,26 +2,20 @@ import React, { PropTypes } from 'react';
 import {
     StyleSheet,
     TouchableOpacity,
-    Button,
     Text,
     View,
     Alert,
     TextInput,
-    NativeModules,
-    NativeAppEventEmitter,
-    DeviceEventEmitter
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-//import dismissKeyboard from 'react-native-dismiss-keyboard';
-import { generateUUID, LimitProp } from '../../services/mainService';
+import { generateUUID, ClassProp } from '../../services/mainService';
 import { pushRoute, setRightComponentAction } from '../navigation/NavigationState';
-import { saveLimit, removeLimit } from '../limits/LimitsState';
+import { saveClass, removeClass } from './ClassState';
 
-const AudioLevel  = NativeModules.AudioLevel;
 const dismissKeyboard = require('dismissKeyboard');
 
-const EditLimtsView = React.createClass({
-    goToDecibels() {
+const EditClassView = React.createClass({
+    /*goToDecibels() {
         dismissKeyboard();
         this.props.dispatch(pushRoute({
             key: 'Decibel',
@@ -30,34 +24,25 @@ const EditLimtsView = React.createClass({
                 decibels: { ...this.state.decibels, value: data.decibels}
             })
         }));
-    },
+    },*/
     getInitialState() {
-        let initialLimit = {
+        let initialClass = {
             id: generateUUID(),
-            decibels: new LimitProp(0, true),
-            title: new LimitProp('', true),
-            message: new LimitProp('', false),
-            audio: new LimitProp('', false)
+            title: new ClassProp('', true),
+            description: new ClassProp('', false)
         };
-        const { data: { limit } } = this.props;
+        const { data: { Class } } = this.props;
 
-        if (limit) initialLimit = limit;
+        if (Class) initialClass = Class;
 
-        return initialLimit;
+        return initialClass;
     },
     componentDidMount() {
         setTimeout(() => this.props.dispatch(setRightComponentAction(
-            () => this.saveLimitObj()
+            () => this.saveClassObj()
         )), 300);
-        NativeAppEventEmitter.addListener('chosenFleURI', (data) => {
-            this.setState({ audio: {
-                ...this.state.audio,
-                value: data.fileURI,
-                title: data.fileName
-            }});
-        });
     },
-    saveLimitObj() {
+    saveClassObj() {
         const emptyProps = [];
 
         dismissKeyboard();
@@ -70,7 +55,7 @@ const EditLimtsView = React.createClass({
         }
 
         if (emptyProps.length === 0) {
-            this.props.dispatch(saveLimit(this.state))
+            this.props.dispatch(saveClass(this.state))
         } else {
             const message = `${ emptyProps.join(', ') } ${ emptyProps.length > 1 ? 'need' : 'needs' } to be filled`;
             Alert.alert(
@@ -81,22 +66,19 @@ const EditLimtsView = React.createClass({
             );
         }
     },
-    removeLimitObj() {
+    removeClassObj() {
         Alert.alert(
             null,
-            'Do you really want to delete limit?',
+            'Do you really want to delete class?',
             [
                 { text: 'Cancel' },
                 { text: 'OK', onPress: () => {
                     const id = this.state.id;
-                    this.props.dispatch(removeLimit(id));
+                    this.props.dispatch(removeClass(id));
                 }},
             ],
             { cancelable: false }
         );
-    },
-    chooseAudio() {
-        AudioLevel.chooseAudio();
     },
     render() {
         const { data: { isUpdate } } = this.props;
@@ -112,15 +94,15 @@ const EditLimtsView = React.createClass({
                     })}
                 />
                 <TextInput
-                    style={ styles.textmessage }
-                    placeholder="Message"
+                    style={ styles.descriptioni }
+                    placeholder="Description"
                     multiline = { true }
-                    value={ this.state.message.value }
+                    value={ this.state.description.value }
                     onChangeText={ value => this.setState({
-                        message: { ...this.state.message, value }
+                        description: { ...this.state.description, value }
                     })}
                 />
-                <TouchableOpacity
+                {/*<TouchableOpacity
                     onPress={ this.goToDecibels }
                     style={[styles.button, this.props.isSelected && styles.selected]}>
                     <View>
@@ -130,33 +112,20 @@ const EditLimtsView = React.createClass({
                         <Text style={styles.decibelsvalue}>{ this.state.decibels.value } DB</Text>
                         <Icon name="angle-right" size={22} style={styles.arrowRight}/>
                     </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={ this.chooseAudio }
-                    style={ styles.button }>
-                    <View>
-                        <Text style={styles.buttontext}>{ this.state.audio.title || 'Sound Alert' }</Text>
-                    </View>
-                </TouchableOpacity>
+                </TouchableOpacity>*/}
 
                 { isUpdate && <TouchableOpacity
-                    onPress={this.removeLimitObj}
-                    style={[styles.bigButton, styles.deleteButton]}>
-                    <Icon name="remove" size={22} style={styles.bigButtonIcon}>
+                    onPress={this.removeClassObj}
+                    style={ [styles.bigButton, styles.deleteButton] }>
+                    <Icon name="remove" size={22} style={ styles.bigButtonIcon }>
                     </Icon>
-                    <Text style={styles.bigButtonText}>DELETE</Text>
+                    <Text style={ styles.bigButtonText }>DELETE</Text>
                     </TouchableOpacity>
                 }
             </View>
         );
     }
 });
-const circle = {
-    borderWidth: 0,
-    borderRadius: 40,
-    width: 80,
-    height: 80
-};
 
 const styles = StyleSheet.create({
     container: {
@@ -169,7 +138,7 @@ const styles = StyleSheet.create({
     title:{
         alignSelf: 'stretch',
     },
-    textmessage:{
+    descriptioni:{
         alignSelf: 'stretch',
 
     },
@@ -197,9 +166,6 @@ const styles = StyleSheet.create({
     arrowAndDb:{
         flexDirection: "row",
     },
-    decibelsvalue:{
-
-    },
     bigButton:{
         paddingTop: 10,
         paddingBottom: 10,
@@ -219,10 +185,7 @@ const styles = StyleSheet.create({
     bigButtonText:{
         marginLeft: 5,
         fontSize:14
-    },
-    bigButtonIcon:{
-
     }
 });
 
-export default EditLimtsView;
+export default EditClassView;

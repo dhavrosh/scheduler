@@ -2,15 +2,15 @@ import { Map, fromJS } from 'immutable';
 import { loop, combineReducers } from 'redux-loop';
 import NavigationStateReducer from '../modules/navigation/NavigationState';
 import SessionStateReducer, {RESET_STATE} from '../modules/session/SessionState';
+import ClassStateReducer from '../modules/class/ClassState';
 
 /*import AmplitudeStateReducer from '../modules/dashboard/DashboardState';
-import DecibelPickerStateReducer from '../modules/decibelPicker/DecibelPickerState';
-import LimitsStateReducer from '../modules/limits/LimitsState';*/
+import DecibelPickerStateReducer from '../modules/decibelPicker/DecibelPickerState';*/
 
 const reducers = {
     /*dashboard: AmplitudeStateReducer,
-    decibels: DecibelPickerStateReducer,
-    limits: LimitsStateReducer,*/
+    decibels: DecibelPickerStateReducer,*/
+    classes: ClassStateReducer,
     navigationState: NavigationStateReducer,
     session: SessionStateReducer
 };

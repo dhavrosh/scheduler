@@ -14,11 +14,7 @@ export function generateUUID() {
   return uuid;
 }
 
-export function LimitProp(value, isRequired) {
+export function ClassProp(value, isRequired) {
   this.value = value;
   this.isRequired = isRequired;
-}
-
-export function fromDecibels(value) {
-  return (20 * Math.log10(value / 135));
 }

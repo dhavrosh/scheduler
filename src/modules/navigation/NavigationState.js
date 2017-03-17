@@ -47,19 +47,24 @@ const initialState = fromJS({
   tabs: {
     index: 0,
     routes: [
-      {key: 'Dashboard', title: 'Dashboard', tabIcon: 'home'}
-      /*{key: 'ProfileTab', title: 'SETTINGS', tabIcon: 'cog'}*/
+      {key: 'Dashboard', title: 'Dashboard', tabIcon: 'home'},
+      {key: 'Class', title: 'Classes', tabIcon: 'tasks'}
     ]
   },
   Dashboard: {
     index: 0,
     routes: [{key: 'Dashboard', title: 'Dashboard'}]
   },
-  /*ProfileTab: {
+  Class: {
     index: 0,
-    routes: [{key: 'Settings', title: 'Settings'}]
-  },
-  DecibelScene: {
+    routes: [{
+      key: 'Class',
+      title: 'Classes',
+      showRightComponent: 'true',
+      iconName: 'plus',
+    }]
+  }
+  /*DecibelScene: {
     index: 0,
     routes: [{key: 'Decibel', title: 'Decibels'}]
   },*/

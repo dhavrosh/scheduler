@@ -2,11 +2,11 @@
 
 import React from 'react';
 import DahsboardViewContainer from './dashboard/DashboardViewContainer';
+import ClassViewContainer from './class/ClassViewContainer';
+import EditClassContainer from './class/EditClassViewContainer';
 
 /*import SettingsViewContainer from './settings/SettingsViewContainer';
-import DecibelPickerContainer from './decibelPicker/DecibelPickerViewContainer';
-import LimitsViewContainer from './limits/LimitsViewContainer';
-import EditLimitContainer from './editLimits/EditLimitsViewContainer';*/
+import DecibelPickerContainer from './decibelPicker/DecibelPickerViewContainer';*/
 
 export default function AppRouter(props) {
   const key = props.scene.route.key;
@@ -16,13 +16,15 @@ export default function AppRouter(props) {
     return <DahsboardViewContainer/>;
   }
 
-  /*if (key === 'Decibel') {
-    return <DecibelPickerContainer data={ data } />;
-  }
-  if (key === 'EditLimit') {
-        return <EditLimitContainer data={ data } />;
+  if (key === 'Class') {
+    return <ClassViewContainer data={ data } />;
   }
 
+  if (key === 'EditClass') {
+    return <EditClassContainer data={ data } />;
+  }
+
+  /*
   if (key === 'Limits') {
     return <LimitsViewContainer />;
   }

@@ -3,42 +3,42 @@ import { popRoute } from '../navigation/NavigationState';
 
 const initialState = List([]);
 
-const SAVE_LIMIT = 'LimitsState/SAVE_LIMIT';
-const REMOVE_LIMIT = 'LimitsState/REMOVE_LIMIT';
+const SAVE_CLASS = 'ClassState/SAVE_CLASS';
+const REMOVE_CLASS = 'ClassState/REMOVE_CLASS';
 
-export function saveLimitObj(obj) {
+export function saveClassObj(obj) {
     return {
-        type: 'LimitsState/SAVE_LIMIT',
+        type: SAVE_CLASS,
         payload: obj
     };
 }
 
-export function removeLimitObj(id) {
+export function removeClassObj(id) {
     return {
-        type: 'LimitsState/REMOVE_LIMIT',
+        type: REMOVE_CLASS,
         payload: id
     };
 }
 
-export function saveLimit(limitObj) {
+export function saveClass(obj) {
     return dispatch => {
-        dispatch(saveLimitObj(limitObj));
+        dispatch(saveClassObj(obj));
         dispatch(popRoute());
     }
 }
 
-export function removeLimit(id) {
+export function removeClass(id) {
     return dispatch => {
-        dispatch(removeLimitObj(id));
+        dispatch(removeClassObj(id));
         dispatch(popRoute());
     }
 }
 
-export default function limitState(state = initialState, action) {
+export default function classState(state = initialState, action) {
     switch (action.type) {
-        case SAVE_LIMIT: {
+        case SAVE_CLASS: {
             let _state = state.toJS();
-            const index = _state.findIndex(limit => limit.id === action.payload.id);
+            const index = _state.findIndex(item => item.id === action.payload.id);
 
             if (index > -1) {
                 _state[index] = action.payload;
@@ -48,9 +48,9 @@ export default function limitState(state = initialState, action) {
 
             return fromJS(_state);
         }
-        case REMOVE_LIMIT: {
+        case REMOVE_CLASS: {
             let _state = state.toJS();
-            _state = _state.filter(limit => limit.id !== action.payload);
+            _state = _state.filter(item => item.id !== action.payload);
 
             return fromJS(_state);
         }
