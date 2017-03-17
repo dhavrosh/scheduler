@@ -1,11 +1,10 @@
 import {Provider} from 'react-redux';
 import store from './src/redux/store';
 import AppViewContainer from './src/modules/AppViewContainer';
-
 import React from 'react';
-import {AppRegistry} from 'react-native';
+import { AppRegistry } from 'react-native';
 
-const PepperoniAppTemplate = React.createClass({
+const Scheduler = React.createClass({
 
   render() {
     return (
@@ -16,4 +15,4 @@ const PepperoniAppTemplate = React.createClass({
   }
 });
 
-AppRegistry.registerComponent('PepperoniAppTemplate', () => PepperoniAppTemplate);
+AppRegistry.registerComponent('Scheduler', () => Scheduler);
