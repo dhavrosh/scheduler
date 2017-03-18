@@ -8,29 +8,29 @@ import {
   TimePickerAndroid
 } from 'react-native';
 
-const DecibelPickerView = React.createClass({
+const DayView = React.createClass({
   propTypes: {
     setSceneParams: PropTypes.func.isRequired,
-    decibels: PropTypes.array.isRequired
+    days: PropTypes.array.isRequired
   },
   getInitialState() {
     const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-    return { decibels: ds.cloneWithRows(this.props.decibels) }
+    return { days: ds.cloneWithRows(this.props.days) }
   },
-  chooseDecibels(decibels){
-    this.props.setSceneParams({ decibels });
-    this.props.onNavigateBack();
+  selectDay(days){
+    this.props.setSceneParams({ days });
+    this.props.popRoute();
   },
   render() {
     return (
       <View style={ styles.container }>
         <ListView
-            dataSource={ this.state.decibels }
+            dataSource={ this.state.days }
             renderRow={value =>
             <TouchableOpacity
-                onPress={() => this.chooseDecibels(value)}
+                onPress={() => this.selectDay(value)}
                 style={styles.limitButton}>
-              <Text>{ value } db</Text>
+              <Text>{ value }</Text>
             </TouchableOpacity>
             }
         />
@@ -67,10 +67,10 @@ const styles = StyleSheet.create({
       paddingLeft: 10,
       fontSize: 20
   },
-  decibelsValue: {
+  daysValue: {
       paddingLeft: 10,
       fontSize: 15,
   }
 });
 
-export default DecibelPickerView;
+export default DayView;

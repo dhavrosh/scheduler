@@ -1,15 +1,13 @@
 import { Map, fromJS } from 'immutable';
 import { loop, combineReducers } from 'redux-loop';
+
 import NavigationStateReducer from '../modules/navigation/NavigationState';
 import SessionStateReducer, {RESET_STATE} from '../modules/session/SessionState';
 import ClassStateReducer from '../modules/class/ClassState';
-
-/*import AmplitudeStateReducer from '../modules/dashboard/DashboardState';
-import DecibelPickerStateReducer from '../modules/decibelPicker/DecibelPickerState';*/
+import DayStateReducer from '../modules/day/DayState';
 
 const reducers = {
-    /*dashboard: AmplitudeStateReducer,
-    decibels: DecibelPickerStateReducer,*/
+    days: DayStateReducer,
     classes: ClassStateReducer,
     navigationState: NavigationStateReducer,
     session: SessionStateReducer

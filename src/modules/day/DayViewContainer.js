@@ -1,19 +1,19 @@
 import {connect} from 'react-redux';
-import DecibelPickerView from './DecibelPickerView';
+import DayView from './DayView';
 import { setSceneParams, popRoute } from '../../modules/navigation/NavigationState';
 
 export default connect(
     state => {
         return {
-            decibels: state.get('decibels').toJS()
+            days: state.get('days').toJS()
         }
     },
     dispatch => ({
         setSceneParams(params) {
             dispatch(setSceneParams(params));
         },
-        onNavigateBack() {
+        popRoute() {
             dispatch(popRoute());
         },
     })
-)(DecibelPickerView);
+)(DayView);

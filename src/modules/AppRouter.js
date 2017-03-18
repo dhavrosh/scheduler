@@ -4,9 +4,7 @@ import React from 'react';
 import DahsboardViewContainer from './dashboard/DashboardViewContainer';
 import ClassViewContainer from './class/ClassViewContainer';
 import EditClassContainer from './class/EditClassViewContainer';
-
-/*import SettingsViewContainer from './settings/SettingsViewContainer';
-import DecibelPickerContainer from './decibelPicker/DecibelPickerViewContainer';*/
+import DayViewContainer from './day/DayViewContainer';
 
 export default function AppRouter(props) {
   const key = props.scene.route.key;
@@ -17,21 +15,16 @@ export default function AppRouter(props) {
   }
 
   if (key === 'Class') {
-    return <ClassViewContainer data={ data } />;
+    return <ClassViewContainer data={ data }/>;
   }
 
   if (key === 'EditClass') {
-    return <EditClassContainer data={ data } />;
+    return <EditClassContainer data={ data }/>;
   }
 
-  /*
-  if (key === 'Limits') {
-    return <LimitsViewContainer />;
+  if (key === 'Day') {
+    return <DayViewContainer/>;
   }
-
-  if (key === 'Settings') {
-    return <SettingsViewContainer/>;
-  }*/
 
   throw new Error('Unknown navigation key: ' + key);
 }

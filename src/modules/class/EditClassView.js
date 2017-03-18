@@ -15,21 +15,22 @@ import { saveClass, removeClass } from './ClassState';
 const dismissKeyboard = require('dismissKeyboard');
 
 const EditClassView = React.createClass({
-    /*goToDecibels() {
+    selectDays() {
         dismissKeyboard();
         this.props.dispatch(pushRoute({
-            key: 'Decibel',
-            title: `Decibels`,
+            key: 'Day',
+            title: 'Days',
             navigateBackAction: data => data && this.setState({
-                decibels: { ...this.state.decibels, value: data.decibels}
+                days: { ...this.state.days, value: data.days }
             })
         }));
-    },*/
+    },
     getInitialState() {
         let initialClass = {
             id: generateUUID(),
             title: new ClassProp('', true),
-            description: new ClassProp('', false)
+            description: new ClassProp('', false),
+            days: new ClassProp('', false),
         };
         const { data: { Class } } = this.props;
 
@@ -102,17 +103,17 @@ const EditClassView = React.createClass({
                         description: { ...this.state.description, value }
                     })}
                 />
-                {/*<TouchableOpacity
-                    onPress={ this.goToDecibels }
+                <TouchableOpacity
+                    onPress={ this.selectDays }
                     style={[styles.button, this.props.isSelected && styles.selected]}>
                     <View>
                         <Text style={styles.buttontext}>Sound Limit</Text>
                     </View>
                     <View style={styles.arrowAndDb}>
-                        <Text style={styles.decibelsvalue}>{ this.state.decibels.value } DB</Text>
+                        <Text style={styles.daysvalue}>{ this.state.days.value }</Text>
                         <Icon name="angle-right" size={22} style={styles.arrowRight}/>
                     </View>
-                </TouchableOpacity>*/}
+                </TouchableOpacity>
 
                 { isUpdate && <TouchableOpacity
                     onPress={this.removeClassObj}
