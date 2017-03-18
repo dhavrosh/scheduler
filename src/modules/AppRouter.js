@@ -23,7 +23,7 @@ export default function AppRouter(props) {
   }
 
   if (key === 'Day') {
-    return <DayViewContainer/>;
+    return <DayViewContainer data={ data }/>;
   }
 
   throw new Error('Unknown navigation key: ' + key);

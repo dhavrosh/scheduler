@@ -5,7 +5,9 @@ import { setSceneParams, popRoute } from '../../modules/navigation/NavigationSta
 export default connect(
     state => {
         return {
-            days: state.get('days').toJS()
+            days: state.get('days').toJS().map(value => ({
+                value, selected: false
+            }))
         }
     },
     dispatch => ({

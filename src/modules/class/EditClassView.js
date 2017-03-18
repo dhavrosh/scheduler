@@ -15,11 +15,12 @@ import { saveClass, removeClass } from './ClassState';
 const dismissKeyboard = require('dismissKeyboard');
 
 const EditClassView = React.createClass({
-    selectDays() {
+    selectDays(days) {
         dismissKeyboard();
         this.props.dispatch(pushRoute({
             key: 'Day',
             title: 'Days',
+            data: { days },
             navigateBackAction: data => data && this.setState({
                 days: { ...this.state.days, value: data.days }
             })
@@ -30,7 +31,7 @@ const EditClassView = React.createClass({
             id: generateUUID(),
             title: new ClassProp('', true),
             description: new ClassProp('', false),
-            days: new ClassProp('', false),
+            days: new ClassProp([], false),
         };
         const { data: { Class } } = this.props;
 
@@ -83,34 +84,35 @@ const EditClassView = React.createClass({
     },
     render() {
         const { data: { isUpdate } } = this.props;
+        const { title, description, days }  = this.state;
 
         return (
             <View style={ styles.container }>
                 <TextInput
                     placeholder="Title"
                     style={ styles.title }
-                    value={ this.state.title.value }
+                    value={ title.value }
                     onChangeText={ value => this.setState({
-                        title: { ...this.state.title, value }
+                        title: { ...title, value }
                     })}
                 />
                 <TextInput
-                    style={ styles.descriptioni }
+                    style={ styles.description }
                     placeholder="Description"
                     multiline = { true }
-                    value={ this.state.description.value }
+                    value={ description.value }
                     onChangeText={ value => this.setState({
-                        description: { ...this.state.description, value }
+                        description: { ...description, value }
                     })}
                 />
                 <TouchableOpacity
-                    onPress={ this.selectDays }
+                    onPress={ () => this.selectDays(days.value) }
                     style={[styles.button, this.props.isSelected && styles.selected]}>
                     <View>
                         <Text style={styles.buttontext}>Sound Limit</Text>
                     </View>
                     <View style={styles.arrowAndDb}>
-                        <Text style={styles.daysvalue}>{ this.state.days.value }</Text>
+                        <Text style={styles.daysvalue}>{ days.value.join(', ') }</Text>
                         <Icon name="angle-right" size={22} style={styles.arrowRight}/>
                     </View>
                 </TouchableOpacity>
@@ -139,7 +141,7 @@ const styles = StyleSheet.create({
     title:{
         alignSelf: 'stretch',
     },
-    descriptioni:{
+    description:{
         alignSelf: 'stretch',
 
     },

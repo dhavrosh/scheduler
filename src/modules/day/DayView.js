@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -14,23 +15,50 @@ const DayView = React.createClass({
     days: PropTypes.array.isRequired
   },
   getInitialState() {
-    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-    return { days: ds.cloneWithRows(this.props.days) }
+    let { days, data } = this.props;
+    const ds = new ListView.DataSource({
+        rowHasChanged: (r1, r2) => r1 !== r2
+    });
+
+    if (data && data.days) {
+        days = days.map(day => {
+            if (data.days.indexOf(day.value) > -1) {
+                day.selected = true;
+            }
+
+            return day;
+        })
+    }
+
+    return {
+        days,
+        dataSource: ds.cloneWithRows(days)
+    }
   },
-  selectDay(days){
-    this.props.setSceneParams({ days });
-    this.props.popRoute();
+  selectDay(index){
+    const oldDays = this.state.days;
+    const days = oldDays.slice();
+
+    days[index] = { ...oldDays[index], selected: !oldDays[index].selected };
+    this.setState({
+        days,
+        dataSource: this.state.dataSource.cloneWithRows(days),
+    });
+    this.props.setSceneParams({
+        days: days.filter(day => day.selected).map(day => day.value)
+    });
   },
   render() {
     return (
       <View style={ styles.container }>
         <ListView
-            dataSource={ this.state.days }
-            renderRow={value =>
+            dataSource={ this.state.dataSource }
+            renderRow={ (day, p, index) =>
             <TouchableOpacity
-                onPress={() => this.selectDay(value)}
+                onPress={ () => this.selectDay(index) }
                 style={styles.limitButton}>
-              <Text>{ value }</Text>
+              <Text>{ day.value }</Text>
+                { day.selected && <Icon name="check" size={22} /> }
             </TouchableOpacity>
             }
         />
@@ -70,6 +98,10 @@ const styles = StyleSheet.create({
   daysValue: {
       paddingLeft: 10,
       fontSize: 15,
+  },
+  bigButtonText:{
+    marginLeft: 5,
+    fontSize:14
   }
 });
 
