@@ -4,6 +4,7 @@ import React from 'react';
 import DahsboardViewContainer from './dashboard/DashboardViewContainer';
 import ClassViewContainer from './class/ClassViewContainer';
 import EditClassContainer from './class/EditClassViewContainer';
+import TimeViewContainer from './time/TimeViewContainer';
 import DayViewContainer from './day/DayViewContainer';
 
 export default function AppRouter(props) {
@@ -20,6 +21,10 @@ export default function AppRouter(props) {
 
   if (key === 'EditClass') {
     return <EditClassContainer data={ data }/>;
+  }
+
+  if (key === 'Time') {
+    return <TimeViewContainer data={ data }/>;
   }
 
   if (key === 'Day') {

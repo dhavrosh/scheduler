@@ -8,30 +8,40 @@ import {
     TextInput,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { generateUUID, ClassProp } from '../../services/mainService';
+import { generateUUID, StateProp } from '../../services/mainService';
 import { pushRoute, setRightComponentAction } from '../navigation/NavigationState';
 import { saveClass, removeClass } from './ClassState';
 
 const dismissKeyboard = require('dismissKeyboard');
 
 const EditClassView = React.createClass({
-    selectDays(days) {
+    createTime(time) {
         dismissKeyboard();
         this.props.dispatch(pushRoute({
-            key: 'Day',
-            title: 'Days',
-            data: { days },
-            navigateBackAction: data => data && this.setState({
-                days: { ...this.state.days, value: data.days }
-            })
+            key: 'Time',
+            title: 'Time',
+            data: { time },
+            navigateBackAction: data => data && this.handleTimeObj(data)
         }));
+    },
+    handleTimeObj(obj) {
+        let newTimes = this.state.times.value.slice();
+        const index = newTimes.findIndex(time => time.id === obj.id);
+
+        if (index > -1) {
+            newTimes[index] = obj;
+        } else {
+            newTimes = [...newTimes, obj];
+        }
+
+        this.setState({ times: { ...this.state.times, value: newTimes } })
     },
     getInitialState() {
         let initialClass = {
             id: generateUUID(),
-            title: new ClassProp('', true),
-            description: new ClassProp('', false),
-            days: new ClassProp([], false),
+            title: new StateProp('', true),
+            description: new StateProp('', false),
+            times: new StateProp([], false),
         };
         const { data: { Class } } = this.props;
 
@@ -84,7 +94,7 @@ const EditClassView = React.createClass({
     },
     render() {
         const { data: { isUpdate } } = this.props;
-        const { title, description, days }  = this.state;
+        const { title, description, times }  = this.state;
 
         return (
             <View style={ styles.container }>
@@ -106,16 +116,26 @@ const EditClassView = React.createClass({
                     })}
                 />
                 <TouchableOpacity
-                    onPress={ () => this.selectDays(days.value) }
+                    onPress={ () => this.createTime(times.value) }
                     style={[styles.button, this.props.isSelected && styles.selected]}>
                     <View>
-                        <Text style={styles.buttontext}>Sound Limit</Text>
+                        <Text style={styles.buttontext}>Create Time</Text>
                     </View>
                     <View style={styles.arrowAndDb}>
-                        <Text style={styles.daysvalue}>{ days.value.join(', ') }</Text>
                         <Icon name="angle-right" size={22} style={styles.arrowRight}/>
                     </View>
                 </TouchableOpacity>
+
+                { times.value && times.value.map(time =>
+                    <TouchableOpacity
+                        onPress={ () => {} }
+                        key={ time.id }
+                        style={ styles.button }>
+                        <View>
+                            <Text style={ styles.buttontext }>{ time.start } - { time.end }</Text>
+                        </View>
+                    </TouchableOpacity>
+                ) }
 
                 { isUpdate && <TouchableOpacity
                     onPress={this.removeClassObj}

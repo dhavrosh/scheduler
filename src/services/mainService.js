@@ -14,7 +14,7 @@ export function generateUUID() {
   return uuid;
 }
 
-export function ClassProp(value, isRequired) {
+export function StateProp(value, isRequired) {
   this.value = value;
   this.isRequired = isRequired;
 }
