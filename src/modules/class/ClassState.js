@@ -1,10 +1,11 @@
 import { List, fromJS } from 'immutable';
-import { popRoute } from '../navigation/NavigationState';
+import { popRoute, setSceneParams } from '../navigation/NavigationState';
 
 const initialState = List([]);
 
 const SAVE_CLASS = 'ClassState/SAVE_CLASS';
 const REMOVE_CLASS = 'ClassState/REMOVE_CLASS';
+const REMOVE_TIME = 'ClassState/REMOVE_TIME';
 
 export function saveClassObj(obj) {
     return {
@@ -30,6 +31,13 @@ export function saveClass(obj) {
 export function removeClass(id) {
     return dispatch => {
         dispatch(removeClassObj(id));
+        dispatch(popRoute());
+    }
+}
+
+export function removeTime(obj) {
+    return dispatch => {
+        dispatch(setSceneParams(obj));
         dispatch(popRoute());
     }
 }

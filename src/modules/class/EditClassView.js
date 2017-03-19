@@ -20,21 +20,25 @@ const EditClassView = React.createClass({
         this.props.dispatch(pushRoute({
             key: 'Time',
             title: 'Time',
-            data: { time },
+            data: { time, isUpdate: time && true || false },
             navigateBackAction: data => data && this.handleTimeObj(data)
         }));
     },
     handleTimeObj(obj) {
-        let newTimes = this.state.times.value.slice();
-        const index = newTimes.findIndex(time => time.id === obj.id);
+        if (obj.days) {
+            let newTimes = this.state.times.value.slice();
+            const index = newTimes.findIndex(time => time.id === obj.id);
 
-        if (index > -1) {
-            newTimes[index] = obj;
-        } else {
-            newTimes = [...newTimes, obj];
-        }
+            if (obj.hasOwnProperty('remove') && obj.remove === true) {
+                newTimes = newTimes.filter(time => time.id !== obj.id);
+            } else if (index > -1) {
+                newTimes[index] = obj;
+            } else {
+                newTimes = [...newTimes, obj];
+            }
 
-        this.setState({ times: { ...this.state.times, value: newTimes } })
+            this.setState({times: {...this.state.times, value: newTimes}})
+        } else console.warn('Days are required for time objects');
     },
     getInitialState() {
         let initialClass = {
@@ -116,7 +120,7 @@ const EditClassView = React.createClass({
                     })}
                 />
                 <TouchableOpacity
-                    onPress={ () => this.createTime(times.value) }
+                    onPress={ () => this.createTime() }
                     style={[styles.button, this.props.isSelected && styles.selected]}>
                     <View>
                         <Text style={styles.buttontext}>Create Time</Text>
@@ -128,7 +132,7 @@ const EditClassView = React.createClass({
 
                 { times.value && times.value.map(time =>
                     <TouchableOpacity
-                        onPress={ () => {} }
+                        onPress={ () => this.createTime(time) }
                         key={ time.id }
                         style={ styles.button }>
                         <View>

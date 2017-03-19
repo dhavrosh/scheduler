@@ -8,10 +8,14 @@ import {
     TextInput,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { generateUUID, StateProp } from '../../services/mainService';
+import { generateUUID } from '../../services/mainService';
 import { pushRoute, setSceneParams } from '../navigation/NavigationState';
+import { removeTime } from '../class/ClassState';
 
 const TimeView = React.createClass({
+    setTimeParams(params) {
+        this.props.dispatch(setSceneParams(params));
+    },
     selectDays(days) {
         this.props.dispatch(pushRoute({
             key: 'Day',
@@ -20,7 +24,7 @@ const TimeView = React.createClass({
             navigateBackAction: data => {
                 if (data) {
                     this.setState({ days: data.days });
-                    setTimeout(() => this.props.dispatch(setSceneParams(this.state)), 300);
+                    setTimeout(() => this.setTimeParams(this.state), 500);
                 }
             }
         }));
@@ -33,26 +37,51 @@ const TimeView = React.createClass({
                 is24Hour: false,
             });
             if (action !== TimePickerAndroid.dismissedAction) {
-                this.setState({ [prop]: `${hour}:${minute}` });
+
+                if (this.validateTimeEdges(prop, hour)) {
+                    this.setState({ [prop]: { hour, minute } });
+                    this.setTimeParams(this.state);
+                } else {
+                    // show alert
+                }
             }
         } catch ({code, message}) {
             console.warn('Cannot open time picker', message);
         }
     },
+    removeTimeObj() {
+        const time = { id: this.state.id, remove: true };
+        this.props.dispatch(removeTime(time));
+    },
+    getOppositeTimeEdge(origin) {
+        return origin === 'start' ? 'end' : 'start';
+    },
+    validateTimeEdges(type, hours) {
+        const oppositeTimeEdge = this.state[this.getOppositeTimeEdge(prop)];
+
+        return !(type === 'start' && oppositeTimeEdge < hours)
+                || !(type === 'end' && oppositeTimeEdge > hours);
+    },
     getInitialState() {
         let initialTime = {
             id: generateUUID(),
-            start: '',
-            end: '',
+            start: { hour: 9, minute: 0 },
+            end: { hour: 10, minute: 30 },
             days: [],
         };
-        /*const { data: { time } } = this.props;
+        const { data: { time } } = this.props;
 
-        if (time) initialTime = time;*/
+        if (time) initialTime = time;
 
         return initialTime;
     },
+    componentDidMount() {
+      if (this.props.data.isUpdate) {
+          setTimeout(() => this.setTimeParams(this.state), 500);
+      }
+    },
     render() {
+        const { data: { isUpdate } } = this.props;
         const { start, end, days }  = this.state;
 
         return (
@@ -64,7 +93,7 @@ const TimeView = React.createClass({
                         <Text style={styles.buttontext}>Start</Text>
                     </View>
                     <View style={styles.arrowAndDb}>
-                        <Text style={styles.daysvalue}>{ start }</Text>
+                        <Text style={styles.daysvalue}>{ `${start.hour}:${start.minute}` }</Text>
                     </View>
                 </TouchableOpacity>
 
@@ -75,7 +104,7 @@ const TimeView = React.createClass({
                         <Text style={styles.buttontext}>End</Text>
                     </View>
                     <View style={styles.arrowAndDb}>
-                        <Text style={styles.daysvalue}>{ end }</Text>
+                        <Text style={styles.daysvalue}>{ `${end.hour}:${end.minute}` }</Text>
                     </View>
                 </TouchableOpacity>
 
@@ -90,6 +119,15 @@ const TimeView = React.createClass({
                         <Icon name="angle-right" size={22} style={styles.arrowRight}/>
                     </View>
                 </TouchableOpacity>
+
+                { isUpdate && <TouchableOpacity
+                    onPress={ this.removeTimeObj }
+                    style={ [styles.bigButton, styles.deleteButton] }>
+                    <Icon name="remove" size={22} style={ styles.bigButtonIcon }>
+                    </Icon>
+                    <Text style={ styles.bigButtonText }>DELETE</Text>
+                </TouchableOpacity>
+                }
             </View>
         );
     }
