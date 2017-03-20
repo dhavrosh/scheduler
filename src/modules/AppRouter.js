@@ -3,6 +3,7 @@
 import React from 'react';
 import DahsboardViewContainer from './dashboard/DashboardViewContainer';
 import ClassViewContainer from './class/ClassViewContainer';
+import PreviewClassViewContainer from './class/PreviewClassViewContainer';
 import EditClassContainer from './class/EditClassViewContainer';
 import TimeViewContainer from './time/TimeViewContainer';
 import DayViewContainer from './day/DayViewContainer';
@@ -17,6 +18,10 @@ export default function AppRouter(props) {
 
   if (key === 'Class') {
     return <ClassViewContainer data={ data }/>;
+  }
+
+  if (key === 'PreviewClass') {
+    return <PreviewClassViewContainer data={ data }/>;
   }
 
   if (key === 'EditClass') {

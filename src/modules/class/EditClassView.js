@@ -25,7 +25,7 @@ const EditClassView = React.createClass({
         }));
     },
     handleTimeObj(obj) {
-        if (obj.days) {
+        if (obj.days.length > 0) {
             let newTimes = this.state.times.value.slice();
             const index = newTimes.findIndex(time => time.id === obj.id);
 
@@ -136,7 +136,7 @@ const EditClassView = React.createClass({
                         key={ time.id }
                         style={ styles.button }>
                         <View>
-                            <Text style={ styles.buttontext }>{ time.start } - { time.end }</Text>
+                            <Text style={ styles.buttontext }>{ time.start.hour } - { time.end.hour }</Text>
                         </View>
                     </TouchableOpacity>
                 ) }

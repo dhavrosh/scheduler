@@ -41,9 +41,11 @@ const NavigationView = React.createClass({
         return (
             <NavigationHeader
                 {...sceneProps}
-                onNavigateBack={this.props.onNavigateBack} //don't use it. I leave it here just 'in case'
-                style={styles.navigation}
-                //rendering back button(arrow left) only if we can go back
+                onNavigateBack={this.props.onNavigateBack}
+                style={[
+                    styles.navigation,
+                    sceneProps.scene.route.navigationExtended && styles.navigationExtended
+                ]}
                 renderLeftComponent={() => {
                     if (sceneProps.scene.index === 0 || !this.props.onNavigateBack) {
                         return null;
@@ -56,7 +58,10 @@ const NavigationView = React.createClass({
                 }}
                 renderTitleComponent={() => {
                     return (
-                        <NavigationHeader.Title textStyle={styles.navigationTitle}>
+                        <NavigationHeader.Title textStyle={[
+                            styles.navigationTitle,
+                            sceneProps.scene.route.navigationExtended && styles.navigationTitleLarge
+                        ]}>
                             {sceneProps.scene.route.title}
                             </NavigationHeader.Title>
                     );
@@ -115,10 +120,17 @@ const styles = StyleSheet.create({
         flex: 1
     },
     navigation: {
-        backgroundColor: 'steelblue'
+        backgroundColor: 'steelblue',
+
+    },
+    navigationExtended: {
+        height: 120
     },
     navigationTitle: {
         color: 'white'
+    },
+    navigationTitleLarge: {
+        fontSize: 25
     },
     sceneContainer: {
         flex: 1,

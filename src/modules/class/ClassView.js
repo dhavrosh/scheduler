@@ -10,6 +10,16 @@ import { pushRoute, setRightComponentAction } from '../navigation/NavigationStat
 
 const ClassView = React.createClass({
     PropTypes: { classes: PropTypes.array.isRequired  },
+    redirectToPreviewClass(Class){
+        this.props.dispatch(pushRoute({
+            key: 'PreviewClass',
+            title: `${Class.title.value} Class`,
+            data: { Class },
+            navigationExtended: true,
+            showRightComponent: 'true',
+            iconName: 'edit',
+        }));
+    },
     redirectToEditClass(Class){
         this.props.dispatch(pushRoute({
             key: 'EditClass',
@@ -30,7 +40,7 @@ const ClassView = React.createClass({
             <View style={ styles.container }>
                 {
                     classes && classes.map((Class, index) => {
-                       const redirectToClassCover = () => this.redirectToEditClass(Class);
+                       const redirectToClassCover = () => this.redirectToPreviewClass(Class);
 
                        return (
                            <TouchableOpacity

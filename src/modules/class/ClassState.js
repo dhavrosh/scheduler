@@ -25,12 +25,14 @@ export function saveClass(obj) {
     return dispatch => {
         dispatch(saveClassObj(obj));
         dispatch(popRoute());
+        dispatch(popRoute());
     }
 }
 
 export function removeClass(id) {
     return dispatch => {
         dispatch(removeClassObj(id));
+        dispatch(popRoute());
         dispatch(popRoute());
     }
 }

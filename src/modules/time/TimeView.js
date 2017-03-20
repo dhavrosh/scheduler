@@ -4,6 +4,7 @@ import {
     TouchableOpacity,
     Text,
     View,
+    Alert,
     TimePickerAndroid,
     TextInput,
 } from 'react-native';
@@ -29,20 +30,32 @@ const TimeView = React.createClass({
             }
         }));
     },
+    numToTimeItem(num) {
+        return parseInt(num) < 10 ? `0${num}` : num;
+    },
     async selectTime(prop) {
         try {
             const {action, hour, minute} = await TimePickerAndroid.open({
                 hour: 9,
                 minute: 0,
-                is24Hour: false,
+                is24Hour: true,
             });
             if (action !== TimePickerAndroid.dismissedAction) {
 
                 if (this.validateTimeEdges(prop, hour)) {
-                    this.setState({ [prop]: { hour, minute } });
+
+                    this.setState({ [prop]: {
+                        hour: this.numToTimeItem(hour),
+                        minute: this.numToTimeItem(minute)
+                    }});
                     this.setTimeParams(this.state);
                 } else {
-                    // show alert
+                    Alert.alert(
+                        null,
+                        'Please choose correct time',
+                        [{ text: 'OK' }],
+                        { cancelable: false }
+                    );
                 }
             }
         } catch ({code, message}) {
@@ -50,23 +63,22 @@ const TimeView = React.createClass({
         }
     },
     removeTimeObj() {
-        const time = { id: this.state.id, remove: true };
+        const time = { ...this.state, remove: true };
         this.props.dispatch(removeTime(time));
     },
     getOppositeTimeEdge(origin) {
         return origin === 'start' ? 'end' : 'start';
     },
-    validateTimeEdges(type, hours) {
-        const oppositeTimeEdge = this.state[this.getOppositeTimeEdge(prop)];
+    validateTimeEdges(type, hour) {
+        const oppositeTime = this.state[this.getOppositeTimeEdge(type)].hour;
 
-        return !(type === 'start' && oppositeTimeEdge < hours)
-                || !(type === 'end' && oppositeTimeEdge > hours);
+        return type === 'start' ? !(oppositeTime < hour) : !(oppositeTime > hour);
     },
     getInitialState() {
         let initialTime = {
             id: generateUUID(),
-            start: { hour: 9, minute: 0 },
-            end: { hour: 10, minute: 30 },
+            start: { hour: '09', minute: '00' },
+            end: { hour: '10', minute: '30' },
             days: [],
         };
         const { data: { time } } = this.props;
