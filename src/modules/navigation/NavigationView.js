@@ -3,6 +3,7 @@ import {
   NavigationExperimental,
   View,
   Text,
+  TextInput,
   StyleSheet,
   TouchableOpacity
 } from 'react-native';
@@ -14,6 +15,32 @@ const {
 import AppRouter from '../AppRouter';
 import TabBar from '../../components/TabBar';
 import Icon from 'react-native-vector-icons/FontAwesome';
+
+import SearchBar from 'react-native-searchbar'
+
+const items = [
+    1337,
+    'janeway',
+    {
+        lots: 'of',
+        different: {
+            types: 0,
+            data: false,
+            that: {
+                can: {
+                    be: {
+                        quite: {
+                            complex: {
+                                hidden: [ 'gold!' ],
+                            },
+                        },
+                    },
+                },
+            },
+        },
+    },
+    [ 4, 2, 'tree' ],
+];
 
 // Customize bottom tab bar height here if desired
 const TAB_BAR_HEIGHT = 50;
@@ -38,7 +65,7 @@ const NavigationView = React.createClass({
     // NavigationHeader accepts a prop style
     // NavigationHeader.title accepts a prop textStyle
     renderHeader(sceneProps) {
-        return (
+        return !sceneProps.scene.route.search ? (
             <NavigationHeader
                 {...sceneProps}
                 onNavigateBack={this.props.onNavigateBack}
@@ -78,6 +105,19 @@ const NavigationView = React.createClass({
                         </TouchableOpacity>
                     );
                 }}
+            />
+        ) : (
+            <SearchBar
+                hideBack={true}
+                data={items}
+                iconColor="white"
+                textColor="white"
+                placeholderTextColor="white"
+                backgroundColor="steelblue"
+                handleResults={(results) => console.log(results)}
+                showOnLoad
+                fontFamily="System"
+                heightAdjust={-5}
             />
         );
     },

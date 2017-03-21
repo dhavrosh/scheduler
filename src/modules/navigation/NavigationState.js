@@ -48,7 +48,8 @@ const initialState = fromJS({
     index: 0,
     routes: [
       {key: 'Dashboard', title: 'Dashboard', tabIcon: 'home'},
-      {key: 'Class', title: 'Classes', tabIcon: 'tasks'}
+      {key: 'Class', title: 'Classes', tabIcon: 'tasks'},
+      {key: 'Search', title: 'Search', tabIcon: 'search'}
     ]
   },
   Dashboard: {
@@ -63,11 +64,17 @@ const initialState = fromJS({
       showRightComponent: 'true',
       iconName: 'plus',
     }]
-  }
-  /*DecibelScene: {
+  },
+  Search: {
     index: 0,
-    routes: [{key: 'Decibel', title: 'Decibels'}]
-  },*/
+    routes: [{
+      key: 'Search',
+      title: 'Search',
+      showRightComponent: 'true',
+      iconName: 'search',
+      search: true
+    }]
+  }
 });
 
 export default function NavigationReducer(state = initialState, action) {

@@ -1,19 +1,20 @@
 /*eslint-disable react/prop-types*/
 
 import React from 'react';
-import DahsboardViewContainer from './dashboard/DashboardViewContainer';
+import DashboardViewContainer from './dashboard/DashboardViewContainer';
 import ClassViewContainer from './class/ClassViewContainer';
 import PreviewClassViewContainer from './class/PreviewClassViewContainer';
 import EditClassContainer from './class/EditClassViewContainer';
 import TimeViewContainer from './time/TimeViewContainer';
 import DayViewContainer from './day/DayViewContainer';
+import SearchViewContainer from './search/SearchViewContainer';
 
 export default function AppRouter(props) {
   const key = props.scene.route.key;
   const data = props.scene.route.data;
 
   if (key === 'Dashboard') {
-    return <DahsboardViewContainer/>;
+    return <DashboardViewContainer/>;
   }
 
   if (key === 'Class') {
@@ -34,6 +35,10 @@ export default function AppRouter(props) {
 
   if (key === 'Day') {
     return <DayViewContainer data={ data }/>;
+  }
+
+  if (key === 'Search') {
+    return <SearchViewContainer data={ data }/>;
   }
 
   throw new Error('Unknown navigation key: ' + key);
