@@ -58,7 +58,7 @@ const ClassView = React.createClass({
                             );
                         })
                     }
-                    </View> || <Text>To add your classes tap on 'Plus' icon</Text>
+                    </View> || <Text>To add your class tap on 'Plus' button</Text>
                 }
             </View>
         );

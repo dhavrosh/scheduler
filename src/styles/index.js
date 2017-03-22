@@ -35,16 +35,21 @@ const styles = StyleSheet.create({
     classItem: {
         backgroundColor: 'white',
         height: 60,
-        paddingHorizontal: 15,
-        borderBottomColor: 'lightgray',
+        paddingHorizontal: PADDING_LEFT,
+        borderColor: 'lightgray',
         borderBottomWidth: 1,
         flexDirection: 'row',
         alignItems: 'center',
     },
+    dashboardItem: {
+        justifyContent: 'space-between'
+    },
+    classItemBordered: {
+        borderTopWidth: 1
+    },
     classText: {
         fontSize: 18,
         color: '#595959',
-        marginLeft: 10
     },
     textInput:{
         height: BLOCK_HEIGHT,
