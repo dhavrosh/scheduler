@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'space-between'
     },
     dashboardItem: {
         justifyContent: 'space-between'
@@ -54,6 +55,9 @@ const styles = StyleSheet.create({
     textInput:{
         height: BLOCK_HEIGHT,
         color: '#393939',
+    },
+    messageMargin: {
+        marginTop: 220
     },
     fieldUnderlined: {
         borderBottomWidth: 1,

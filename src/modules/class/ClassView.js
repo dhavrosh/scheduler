@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {pushRoute, setRightComponentAction} from '../navigation/NavigationState';
 import styles from '../../styles';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const ClassView = React.createClass({
     PropTypes: {classes: PropTypes.array.isRequired},
@@ -42,11 +43,13 @@ const ClassView = React.createClass({
         const isClassesEmpty = classes && classes.length === 0;
 
         return (
-            <ScrollView style={[styles.container, isClassesEmpty && styles.containerCenter]}>
+            <ScrollView style={[styles.container]}>
+                <View style={isClassesEmpty && styles.containerCenter}>
                     { !isClassesEmpty && <View style={[styles.fieldContainer, {paddingLeft: 0}]}>
                         {
                             classes.map((Class, index) => {
                                 const redirectToClassCover = () => this.redirectToPreviewClass(Class);
+                                const location = Class.location.value;
 
                                 return (
                                     <TouchableOpacity
@@ -54,13 +57,18 @@ const ClassView = React.createClass({
                                         style={[styles.classItem]}
                                         title={ `${index}` }
                                         key={ `class-${index}` }>
-                                        <Text style={styles.classText}>{ Class.title.value }</Text>
+                                        <View>
+                                            <Text style={styles.classText}>{ Class.title.value }</Text>
+                                            <Text>{ `${location.street}, ${location.building}` }</Text>
+                                        </View>
+                                        <Text>{ Class.teacher.value }</Text>
                                     </TouchableOpacity>
                                 );
                             })
                         }
-                    </View> || <Text>To add your class tap on 'Plus' button</Text>
+                    </View> || <Text style={styles.messageMargin}>To add class tap on 'Plus' button</Text>
                     }
+                </View>
             </ScrollView>
         );
     }

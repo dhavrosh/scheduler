@@ -10,6 +10,7 @@ const POP_ROUTE = 'NavigationState/POP_ROUTE';
 const SWITCH_TAB = 'NavigationState/SWITCH_TAB';
 const SET_PARAMS = 'NavigationState/SET_PARAMS';
 const SET_RIGHT_COMPONENT_ACTION = 'NavigationState/SET_RIGHT_COMPONENT_ACTION';
+const SET_SEARCH_ACTION = 'NavigationState/SET_SEARCH_ACTION';
 
 export function switchTab(key) {
   return {
@@ -35,6 +36,13 @@ export function setSceneParams(params) {
 export function setRightComponentAction(action) {
   return {
     type: SET_RIGHT_COMPONENT_ACTION,
+    payload: action
+  };
+}
+
+export function setSearchAction(action) {
+  return {
+    type: SET_SEARCH_ACTION,
     payload: action
   };
 }
@@ -70,8 +78,6 @@ const initialState = fromJS({
     routes: [{
       key: 'Search',
       title: 'Search',
-      showRightComponent: 'true',
-      iconName: 'search',
       search: true
     }]
   }
@@ -153,6 +159,18 @@ export default function NavigationReducer(state = initialState, action) {
       const currentScene = scenes[scenes.length - 1];
 
       currentScene.rightComponentAction = action.payload;
+
+      return fromJS(_state);
+    }
+
+    case SET_SEARCH_ACTION: {
+      const _state = state.toJS();
+      const tabs = _state.tabs;
+      const key = tabs.routes[tabs.index].key;
+      const scenes = _state[key].routes;
+      const currentScene = scenes[scenes.length - 1];
+
+      currentScene.searchAction = action.payload;
 
       return fromJS(_state);
     }

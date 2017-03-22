@@ -36,6 +36,7 @@ const PreviewClassView = React.createClass({
 
             return days;
         }, []);
+        const location = Class.location.value;
 
         return (
             <ScrollView style={ styles.container }>
@@ -47,8 +48,8 @@ const PreviewClassView = React.createClass({
                         </View>
                         <View style={styles.texts}>
                             <Text style={styles.iconText}>{ days.join(', ') }</Text>
-                            <Text style={styles.iconText}>{ Class.title.value }</Text>
-                            <Text style={styles.iconText}>{ Class.title.value }</Text>
+                            <Text style={styles.iconText}>{ `${location.street}, ${location.building}` }</Text>
+                            <Text style={styles.iconText}>{ Class.teacher.value }</Text>
                         </View>
                     </View>
                     <View style={styles.secondarySection}>

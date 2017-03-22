@@ -31,6 +31,7 @@ const DashboardView = React.createClass({
   },
   getClassItem(classObj, index) {
       const redirectToClassCover = () => this.redirectToPreviewClass(classObj.value);
+      const location = classObj.value.location.value;
 
       return (
           <TouchableOpacity
@@ -43,7 +44,7 @@ const DashboardView = React.createClass({
               <Text>{ classObj.end }</Text>
             </View>
             <Text style={styles.classText}>{ classObj.value.title.value }</Text>
-            <View><Text>Location</Text></View>
+            <View><Text>{ `${location.street}, ${location.building}` }</Text></View>
           </TouchableOpacity>
       )
   },
@@ -57,7 +58,7 @@ const DashboardView = React.createClass({
     tomorrow.setDate(tomorrow.getDate() + 1);
 
     return (
-        <ScrollView style={[styles.container, isClassesEmpty && styles.containerCenter]}>
+        <ScrollView contentContainerStyle={isClassesEmpty && styles.containerCenter} style={[styles.container]}>
 
         { !isClassesEmpty &&
           <View>
@@ -78,7 +79,7 @@ const DashboardView = React.createClass({
             </View>
             }
           </View>
-          || <Text>There no any coming classes</Text>
+          || <Text style={styles.messageMargin}>There no any coming classes</Text>
         }
       </ScrollView>
     );

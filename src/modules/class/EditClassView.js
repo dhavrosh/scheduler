@@ -46,7 +46,9 @@ const EditClassView = React.createClass({
             id: generateUUID(),
             title: new StateProp('', true),
             description: new StateProp('', false),
-            times: new StateProp([], false),
+            times: new StateProp([], true),
+            teacher: new StateProp('', true),
+            location: new StateProp({}, true),
         };
         const {data: {Class}} = this.props;
 
@@ -101,9 +103,22 @@ const EditClassView = React.createClass({
             {cancelable: false}
         );
     },
+    getTextInput(placeholder, value, underlined, onChange) {
+        return (
+            <TextInput
+                style={[styles.textInput, underlined && styles.fieldUnderlined]}
+                placeholder={ placeholder }
+                underlineColorAndroid='transparent'
+                autoCorrect={ false }
+                keyboardType='default'
+                value={ value }
+                onChangeText={ onChange }
+            />
+        )
+    },
     render() {
         const {data: {isUpdate}} = this.props;
-        const {title, description, times}  = this.state;
+        const {title, description, times, teacher, location }  = this.state;
 
         return (
                 <ScrollView style={ styles.container }>
@@ -111,28 +126,34 @@ const EditClassView = React.createClass({
                         <Text>General</Text>
                     </View>
                     <View style={[styles.fieldContainer]}>
-                        <TextInput
-                            placeholder="Title"
-                            style={[styles.textInput, styles.fieldUnderlined]}
-                            value={ title.value }
-                            underlineColorAndroid='transparent'
-                            autoCorrect={false}
-                            keyboardType='default'
-                            onChangeText={ value => this.setState({
-                                title: {...title, value}
-                            })}
-                        />
-                        <TextInput
-                            style={[styles.textInput]}
-                            placeholder="Description"
-                            underlineColorAndroid='transparent'
-                            autoCorrect={false}
-                            keyboardType='default'
-                            value={ description.value }
-                            onChangeText={ value => this.setState({
-                                description: {...description, value}
-                            })}
-                        />
+                        { this.getTextInput('Title', title.value, true, value => {
+                                this.setState({title: {...title, value}})}
+                        )}
+                        { this.getTextInput('Description', description.value, false, value => {
+                            this.setState({description: {...description, value}})}
+                        )}
+                    </View>
+                    <View style={styles.labelContainer}>
+                        <Text>Location</Text>
+                    </View>
+                    <View style={[styles.fieldContainer]}>
+                        { this.getTextInput('Street', location.value.street, true, street => this.setState({
+                                location: {...location, value: { ...location.value, street }}
+                            })
+                        )}
+                        { this.getTextInput('Building', location.value.building, false, building => this.setState({
+                                location: {...location, value: { ...location.value, building }}
+                            })
+                        )}
+                    </View>
+                    <View style={styles.labelContainer}>
+                        <Text>Teacher</Text>
+                    </View>
+                    <View style={[styles.fieldContainer]}>
+                        { this.getTextInput('Teacher', teacher.value, false, value => this.setState({
+                                teacher: {...teacher, value}
+                            })
+                        )}
                     </View>
                     <View style={styles.labelContainer}>
                         <Text>Times</Text>

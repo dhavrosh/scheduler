@@ -18,30 +18,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import SearchBar from 'react-native-searchbar'
 
-const items = [
-    1337,
-    'janeway',
-    {
-        lots: 'of',
-        different: {
-            types: 0,
-            data: false,
-            that: {
-                can: {
-                    be: {
-                        quite: {
-                            complex: {
-                                hidden: [ 'gold!' ],
-                            },
-                        },
-                    },
-                },
-            },
-        },
-    },
-    [ 4, 2, 'tree' ],
-];
-
 // Customize bottom tab bar height here if desired
 const TAB_BAR_HEIGHT = 50;
 
@@ -67,7 +43,7 @@ const NavigationView = React.createClass({
     renderHeader(sceneProps) {
         const route = sceneProps.scene.route;
 
-        return !sceneProps.scene.route.search ? (
+        return  (
             <NavigationHeader
                 {...sceneProps}
                 onNavigateBack={this.props.onNavigateBack}
@@ -86,7 +62,7 @@ const NavigationView = React.createClass({
                     )
                 }}
                 renderTitleComponent={() => {
-                    return (
+                    return !route.search ? (
                         <NavigationHeader.Title textStyle={[
                             styles.navigationTitle,
                             route.navigationExtended && styles.navigationTitleLarge
@@ -94,7 +70,21 @@ const NavigationView = React.createClass({
                             {route.title}
                             {route.subtitle && <Text style={{ fontSize: 18 }}>{ '\n' + route.subtitle }</Text>}
                             </NavigationHeader.Title>
-                    );
+                    ) : (
+                        <SearchBar
+                            placeholder="Search"
+                            hideBack={true}
+                            data={this.props.classes}
+                            iconColor="white"
+                            textColor="white"
+                            placeholderTextColor="white"
+                            backgroundColor="steelblue"
+                            handleResults={route.searchAction}
+                            showOnLoad
+                            fontFamily="System"
+                            heightAdjust={-5}
+                        />
+                    );;
                 }}
                 renderRightComponent={() => {
                     if(!route.showRightComponent && !route.iconName){
@@ -109,20 +99,7 @@ const NavigationView = React.createClass({
                     );
                 }}
             />
-        ) : (
-            <SearchBar
-                hideBack={true}
-                data={items}
-                iconColor="white"
-                textColor="white"
-                placeholderTextColor="white"
-                backgroundColor="steelblue"
-                handleResults={(results) => console.log(results)}
-                showOnLoad
-                fontFamily="System"
-                heightAdjust={-5}
-            />
-        );
+        )
     },
     renderScene(sceneProps) {
         // render scene and apply padding to cover
