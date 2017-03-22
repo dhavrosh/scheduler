@@ -28,24 +28,38 @@ const PreviewClassView = React.createClass({
     },
     render() {
         const {data: {Class}} = this.props;
+        const days = Class.times.value.reduce((days, time) => {
+            time.days.forEach(day => {
+                if (!days.includes(day)) days.push(day);
+            });
+
+            return days;
+        }, []);
 
         return (
             <View style={ styles.container }>
                 <View style={styles.mainSection}>
                     <View style={styles.icons}>
-                        <Icon name="calendar" size={30}/>
+                        <Icon name="calendar-check-o" size={30}/>
                         <Icon name="map-marker" size={30}/>
-                        <Icon name="user" size={30}/>
+                        <Icon name="male" size={30}/>
                     </View>
                     <View style={styles.texts}>
-                        <Text >{ Class.title.value }</Text>
-                        <Text >{ Class.title.value }</Text>
-                        <Text >{ Class.title.value }</Text>
+                        <Text style={styles.iconText}>{ days.join(', ') }</Text>
+                        <Text style={styles.iconText}>{ Class.title.value }</Text>
+                        <Text style={styles.iconText}>{ Class.title.value }</Text>
                     </View>
                 </View>
                 <View style={styles.secondarySection}>
-                    <Text style={styles.descriptionTitle}>Description</Text>
-                    <Text style={styles.descriptionText}>{ Class.description.value }</Text>
+                    <Text style={styles.secondaryTitle}>Description</Text>
+                    <Text style={styles.secondaryText}>{ Class.description.value }</Text>
+                    <Text style={[styles.secondaryTitle, styles.secondaryMargin]}>Times</Text>
+                    <View style={styles.secondaryText}>
+                    { Class.times.value.map(time => <Text key={`time-${time.id}`}>
+                        {`${time.days.join(', ')} - ${time.start.hour}:${time.start.minute} - ${time.end.hour}:${time.end.minute}`}
+                        </Text>)
+                    }
+                    </View>
                 </View>
             </View>
     );
@@ -56,6 +70,7 @@ const PreviewClassView = React.createClass({
         container: {
             flex: 1,
             paddingHorizontal: 20,
+            backgroundColor: 'white'
         },
         mainSection: {
             flexDirection: 'row',
@@ -78,18 +93,23 @@ const PreviewClassView = React.createClass({
             justifyContent: 'space-between',
         },
         texts: {
-            marginLeft: 40,
+            marginLeft: 30,
             paddingVertical: 5,
             flexDirection: 'column',
-            alignItems : 'center',
-            justifyContent: 'space-between'
+            justifyContent: 'space-between',
         },
-        descriptionTitle: {
-            fontSize: 16
+        secondaryTitle: {
+            fontSize: 16,
+            color: '#393939'
         },
-        descriptionText: {
-            marginTop: 10,
+        secondaryMargin: {
+          marginTop: 15
+        },
+        iconText: {
             color: 'gray'
+        },
+        secondaryText: {
+            marginTop: 5,
         }
     });
 

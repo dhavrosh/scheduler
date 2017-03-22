@@ -12,17 +12,20 @@ import {
 
 const DashboardView = React.createClass({
   propTypes: {
-    // amplitude: PropTypes.number.isRequired,
+    classes: PropTypes.array.isRequired,
   },
   getInitialState() {
       return {}
   },
   render() {
+    const { classes } = this.props;
+    const isClassesEmpty = classes && classes.length === 0;
+
     return (
       <View style={styles.container}>
-        <Text>
-          There no any available classes
-        </Text>
+        { !isClassesEmpty && classes.map(classObj => <Text key={`class-${classObj.title.value}`}>{classObj.title.value}</Text>)
+          || <Text>There no any available classes</Text>
+        }
       </View>
     );
   }

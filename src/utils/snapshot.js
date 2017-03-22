@@ -12,7 +12,7 @@ export async function resetSnapshot() {
 }
 
 export async function saveSnapshot(state) {
-  await persist(state.delete('navigationState').toJS());
+  await persist(state.toJS()); // delete('navigationState')
 }
 
 export async function clearSnapshot() {

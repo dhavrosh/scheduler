@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import {
-    StyleSheet,
     TouchableOpacity,
     Text,
     View,
@@ -12,6 +11,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { generateUUID } from '../../services/mainService';
 import { pushRoute, setSceneParams } from '../navigation/NavigationState';
 import { removeTime } from '../class/ClassState';
+import styles from '../../styles';
 
 const TimeView = React.createClass({
     setTimeParams(params) {
@@ -98,111 +98,52 @@ const TimeView = React.createClass({
 
         return (
             <View style={ styles.container }>
-                <TouchableOpacity
-                    onPress={ () => this.selectTime('start') }
-                    style={styles.button}>
-                    <View>
-                        <Text style={styles.buttontext}>Start</Text>
-                    </View>
-                    <View style={styles.arrowAndDb}>
-                        <Text style={styles.daysvalue}>{ `${start.hour}:${start.minute}` }</Text>
-                    </View>
-                </TouchableOpacity>
+                <View style={[styles.fieldContainer, styles.margin]}>
+                    <TouchableOpacity
+                        onPress={ () => this.selectDays(days) }
+                        style={[styles.button, styles.fieldUnderlined]}>
+                        <View>
+                            <Text style={styles.buttonText}>Days</Text>
+                        </View>
+                        <View style={styles.arrowAndDb}>
+                            <Text style={styles.textRight}>{ days.join(', ') }</Text>
+                            <Icon name="angle-right" size={22} style={styles.arrowRight}/>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={ () => this.selectTime('start') }
+                        style={[styles.button, styles.fieldUnderlined]}>
+                        <View>
+                            <Text style={styles.buttonText}>Start Time</Text>
+                        </View>
+                        <View style={styles.arrowAndDb}>
+                            <Text style={styles.timeText}>{ `${start.hour}:${start.minute}` }</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={ () => this.selectTime('end') }
+                        style={styles.button}>
+                        <View>
+                            <Text style={styles.buttonText}>End Time</Text>
+                        </View>
+                        <View style={styles.arrowAndDb}>
+                            <Text style={styles.timeText}>{ `${end.hour}:${end.minute}` }</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
 
-                <TouchableOpacity
-                    onPress={ () => this.selectTime('end') }
-                    style={styles.button}>
-                    <View>
-                        <Text style={styles.buttontext}>End</Text>
-                    </View>
-                    <View style={styles.arrowAndDb}>
-                        <Text style={styles.daysvalue}>{ `${end.hour}:${end.minute}` }</Text>
-                    </View>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    onPress={ () => this.selectDays(days) }
-                    style={styles.button}>
-                    <View>
-                        <Text style={styles.buttontext}>Days</Text>
-                    </View>
-                    <View style={styles.arrowAndDb}>
-                        <Text style={styles.daysvalue}>{ days.join(', ') }</Text>
-                        <Icon name="angle-right" size={22} style={styles.arrowRight}/>
-                    </View>
-                </TouchableOpacity>
-
-                { isUpdate && <TouchableOpacity
-                    onPress={ this.removeTimeObj }
-                    style={ [styles.bigButton, styles.deleteButton] }>
-                    <Icon name="remove" size={22} style={ styles.bigButtonIcon }>
-                    </Icon>
-                    <Text style={ styles.bigButtonText }>DELETE</Text>
-                </TouchableOpacity>
+                { isUpdate && <View style={[styles.fieldContainer, styles.margin]}>
+                    <TouchableOpacity
+                        onPress={ this.removeTimeObj }
+                        style={styles.deleteButton}>
+                        <Icon name="remove" size={22} color="red">
+                        </Icon>
+                        <Text style={styles.deleteButtonText}>Delete</Text>
+                    </TouchableOpacity>
+                </View>
                 }
             </View>
         );
-    }
-});
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        marginLeft: 10,
-        marginRight: 10
-    },
-    title:{
-        alignSelf: 'stretch',
-    },
-    description:{
-        alignSelf: 'stretch',
-
-    },
-    arrowRight:{
-        marginLeft: 5,
-        bottom: 2
-    },
-    button:{
-        paddingTop: 5,
-        paddingBottom: 5,
-        alignSelf: 'stretch',
-        borderBottomColor: '#bbb',
-        borderBottomWidth: 1,
-        justifyContent: "space-between",
-        flexDirection: "row",
-        flex: 0,
-        marginTop: 18,
-        marginBottom: 18
-
-    },
-    buttontext:{
-        fontSize: 18,
-
-    },
-    arrowAndDb:{
-        flexDirection: "row",
-    },
-    bigButton:{
-        paddingTop: 10,
-        paddingBottom: 10,
-        alignSelf: 'stretch',
-        marginTop: 18,
-        marginBottom: 18,
-        alignItems: 'center',
-        flexDirection: "row",
-        justifyContent : 'center'
-    },
-    saveButton:{
-        backgroundColor: 'rgba(58,224,29,0.7)',
-    },
-    deleteButton:{
-        backgroundColor: 'rgba(255,0,0,0.6)',
-    },
-    bigButtonText:{
-        marginLeft: 5,
-        fontSize:14
     }
 });
 

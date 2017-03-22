@@ -65,13 +65,15 @@ const NavigationView = React.createClass({
     // NavigationHeader accepts a prop style
     // NavigationHeader.title accepts a prop textStyle
     renderHeader(sceneProps) {
+        const route = sceneProps.scene.route;
+
         return !sceneProps.scene.route.search ? (
             <NavigationHeader
                 {...sceneProps}
                 onNavigateBack={this.props.onNavigateBack}
                 style={[
                     styles.navigation,
-                    sceneProps.scene.route.navigationExtended && styles.navigationExtended
+                    route.navigationExtended && styles.navigationExtended
                 ]}
                 renderLeftComponent={() => {
                     if (sceneProps.scene.index === 0 || !this.props.onNavigateBack) {
@@ -87,21 +89,22 @@ const NavigationView = React.createClass({
                     return (
                         <NavigationHeader.Title textStyle={[
                             styles.navigationTitle,
-                            sceneProps.scene.route.navigationExtended && styles.navigationTitleLarge
+                            route.navigationExtended && styles.navigationTitleLarge
                         ]}>
-                            {sceneProps.scene.route.title}
+                            {route.title}
+                            {route.subtitle && <Text style={{ fontSize: 18 }}>{ '\n' + route.subtitle }</Text>}
                             </NavigationHeader.Title>
                     );
                 }}
                 renderRightComponent={() => {
-                    if(!sceneProps.scene.route.showRightComponent && !sceneProps.scene.route.iconName){
+                    if(!route.showRightComponent && !route.iconName){
                         return null
                     }
                     return (
                         <TouchableOpacity
-                            onPress={sceneProps.scene.route.rightComponentAction}
+                            onPress={route.rightComponentAction}
                             style={styles.plusButtonTouchable}>
-                            <Icon name={sceneProps.scene.route.iconName} size={25} style={styles.plusButton}></Icon>
+                            <Icon name={route.iconName} size={25} style={styles.plusButton}/>
                         </TouchableOpacity>
                     );
                 }}
@@ -164,7 +167,7 @@ const styles = StyleSheet.create({
 
     },
     navigationExtended: {
-        height: 120
+        height: 130
     },
     navigationTitle: {
         color: 'white'

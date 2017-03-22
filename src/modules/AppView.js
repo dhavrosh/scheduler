@@ -24,9 +24,9 @@ const AppView = React.createClass({
         store.subscribe(() => {
           snapshotUtil.saveSnapshot(store.getState());
         });
-          /*const {dispatch} = this.props;
-          dispatch(SessionStateActions.initializeSessionState());
-          snapshotUtil.clearSnapshot();*/
+              /*const {dispatch} = this.props;
+              dispatch(SessionStateActions.initializeSessionState());
+              snapshotUtil.clearSnapshot();*/
       });
   },
 

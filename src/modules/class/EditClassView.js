@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import {
-    StyleSheet,
     TouchableOpacity,
     Text,
     View,
@@ -11,6 +10,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { generateUUID, StateProp } from '../../services/mainService';
 import { pushRoute, setRightComponentAction } from '../navigation/NavigationState';
 import { saveClass, removeClass } from './ClassState';
+import styles from '../../styles';
 
 const dismissKeyboard = require('dismissKeyboard');
 
@@ -102,116 +102,74 @@ const EditClassView = React.createClass({
 
         return (
             <View style={ styles.container }>
-                <TextInput
-                    placeholder="Title"
-                    style={ styles.title }
-                    value={ title.value }
-                    onChangeText={ value => this.setState({
-                        title: { ...title, value }
-                    })}
-                />
-                <TextInput
-                    style={ styles.description }
-                    placeholder="Description"
-                    multiline = { true }
-                    value={ description.value }
-                    onChangeText={ value => this.setState({
-                        description: { ...description, value }
-                    })}
-                />
-                <TouchableOpacity
-                    onPress={ () => this.createTime() }
-                    style={[styles.button, this.props.isSelected && styles.selected]}>
-                    <View>
-                        <Text style={styles.buttontext}>Create Time</Text>
-                    </View>
-                    <View style={styles.arrowAndDb}>
-                        <Icon name="angle-right" size={22} style={styles.arrowRight}/>
-                    </View>
-                </TouchableOpacity>
-
-                { times.value && times.value.map(time =>
+                <View style={styles.labelContainer}>
+                    <Text>General</Text>
+                </View>
+                <View style={[styles.fieldContainer]}>
+                    <TextInput
+                        placeholder="Title"
+                        style={[styles.textInput, styles.fieldUnderlined]}
+                        value={ title.value }
+                        underlineColorAndroid='transparent'
+                        autoCorrect={false}
+                        keyboardType='default'
+                        onChangeText={ value => this.setState({
+                            title: { ...title, value }
+                        })}
+                    />
+                    <TextInput
+                        style={[styles.textInput]}
+                        placeholder="Description"
+                        underlineColorAndroid='transparent'
+                        autoCorrect={false}
+                        keyboardType='default'
+                        value={ description.value }
+                        onChangeText={ value => this.setState({
+                            description: { ...description, value }
+                        })}
+                    />
+                </View>
+                <View style={styles.labelContainer}>
+                    <Text>Times</Text>
+                </View>
+                <View style={[styles.fieldContainer]}>
                     <TouchableOpacity
-                        onPress={ () => this.createTime(time) }
-                        key={ time.id }
-                        style={ styles.button }>
+                        onPress={ () => this.createTime() }
+                        style={[styles.button, styles.fieldUnderlined]}>
                         <View>
-                            <Text style={ styles.buttontext }>{ time.start.hour } - { time.end.hour }</Text>
+                            <Text style={styles.buttonText}>Create Time</Text>
+                        </View>
+                        <View style={styles.arrowAndDb}>
+                            <Icon name="angle-right" size={22} style={styles.arrowRight}/>
                         </View>
                     </TouchableOpacity>
+                    { times.value && times.value.map(time =>
+                        <TouchableOpacity
+                            onPress={ () => this.createTime(time) }
+                            key={ time.id }
+                            style={ styles.button }>
+                            <View>
+                                <Text style={ styles.buttonText }>{ `${time.start.hour}:${time.start.minute} - ${time.end.hour}:${time.end.minute}` }</Text>
+                                <Text style={{ fontSize: 10 }}>{ time.days.join(', ') }</Text>
+                            </View>
+                            <View style={styles.arrowAndDb}>
+                                <Icon name="angle-right" size={22} style={styles.arrowRight}/>
+                            </View>
+                        </TouchableOpacity>
                 ) }
-
-                { isUpdate && <TouchableOpacity
-                    onPress={this.removeClassObj}
-                    style={ [styles.bigButton, styles.deleteButton] }>
-                    <Icon name="remove" size={22} style={ styles.bigButtonIcon }>
-                    </Icon>
-                    <Text style={ styles.bigButtonText }>DELETE</Text>
+                </View>
+                { isUpdate && <View style={[styles.fieldContainer, styles.margin]}>
+                    <TouchableOpacity
+                        onPress={ this.removeClassObj }
+                        style={styles.deleteButton}>
+                        <Icon name="remove" size={22} color="red">
+                        </Icon>
+                        <Text style={styles.deleteButtonText}>Delete</Text>
                     </TouchableOpacity>
+                </View>
                 }
             </View>
         );
-    }
-});
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        marginLeft: 10,
-        marginRight: 10
-    },
-    title:{
-        alignSelf: 'stretch',
-    },
-    description:{
-        alignSelf: 'stretch',
-
-    },
-    arrowRight:{
-        marginLeft: 5,
-        bottom: 2
-    },
-    button:{
-        paddingTop: 5,
-        paddingBottom: 5,
-        alignSelf: 'stretch',
-        borderBottomColor: '#bbb',
-        borderBottomWidth: 1,
-        justifyContent: "space-between",
-        flexDirection: "row",
-        flex: 0,
-        marginTop: 18,
-        marginBottom: 18
-
-    },
-    buttontext:{
-        fontSize: 18,
-
-    },
-    arrowAndDb:{
-        flexDirection: "row",
-    },
-    bigButton:{
-        paddingTop: 10,
-        paddingBottom: 10,
-        alignSelf: 'stretch',
-        marginTop: 18,
-        marginBottom: 18,
-        alignItems: 'center',
-        flexDirection: "row",
-        justifyContent : 'center'
-    },
-    saveButton:{
-        backgroundColor: 'rgba(58,224,29,0.7)',
-    },
-    deleteButton:{
-        backgroundColor: 'rgba(255,0,0,0.6)',
-    },
-    bigButtonText:{
-        marginLeft: 5,
-        fontSize:14
     }
 });
 

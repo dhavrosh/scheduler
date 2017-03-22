@@ -7,6 +7,7 @@ import {
     View,
 } from 'react-native';
 import { pushRoute, setRightComponentAction } from '../navigation/NavigationState';
+import styles from '../../styles';
 
 const ClassView = React.createClass({
     PropTypes: { classes: PropTypes.array.isRequired  },
@@ -14,6 +15,7 @@ const ClassView = React.createClass({
         this.props.dispatch(pushRoute({
             key: 'PreviewClass',
             title: `${Class.title.value} Class`,
+            subtitle: '2017 - 2018',
             data: { Class },
             navigationExtended: true,
             showRightComponent: 'true',
@@ -36,44 +38,30 @@ const ClassView = React.createClass({
     },
     render() {
         const { classes } = this.props;
-        return (
-            <View style={ styles.container }>
-                {
-                    classes && classes.map((Class, index) => {
-                       const redirectToClassCover = () => this.redirectToPreviewClass(Class);
+        const isClassesEmpty = classes && classes.length === 0;
 
-                       return (
-                           <TouchableOpacity
-                                onPress={ redirectToClassCover }
-                                style={ styles.classPanel }
-                                title={ `${index}` }
-                                key={ `class-${index}` }>
-                                <Text style={styles.text}>{ Class.title.value }</Text>
-                            </TouchableOpacity>
-                       );
-                    })
+        return (
+            <View style={[styles.container, isClassesEmpty && styles.containerCenter]}>
+                { !isClassesEmpty && <View style={[styles.fieldContainer, { paddingLeft: 0 }]}>
+                    {
+                        classes.map((Class, index) => {
+                            const redirectToClassCover = () => this.redirectToPreviewClass(Class);
+
+                            return (
+                                <TouchableOpacity
+                                    onPress={ redirectToClassCover }
+                                    style={[styles.classItem]}
+                                    title={ `${index}` }
+                                    key={ `class-${index}` }>
+                                    <Text style={styles.classText}>{ Class.title.value }</Text>
+                                </TouchableOpacity>
+                            );
+                        })
+                    }
+                    </View> || <Text>To add your classes tap on 'Plus' icon</Text>
                 }
             </View>
         );
-    }
-});
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1
-    },
-    classPanel: {
-        alignSelf: 'stretch',
-        height: 70,
-        borderBottomColor: '#bbb',
-        borderBottomWidth: 1,
-        justifyContent: 'center',
-        marginLeft: 10,
-        marginRight: 10
-    },
-    text: {
-        paddingLeft: 10,
-        fontSize: 20
     }
 });
 
