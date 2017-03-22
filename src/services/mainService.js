@@ -50,6 +50,10 @@ export function getClasses(classes) {
   }
 }
 
+export function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 function processClassObj(obj, time) {
   return {
     value: obj,
@@ -57,3 +61,4 @@ function processClassObj(obj, time) {
     end: `${time.end.hour}:${time.end.minute}`
   }
 }
+

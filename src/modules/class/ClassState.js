@@ -1,5 +1,5 @@
 import { List, fromJS } from 'immutable';
-import { popRoute, setSceneParams } from '../navigation/NavigationState';
+import { popRoute, popAllRoutes, setSceneParams } from '../navigation/NavigationState';
 
 const initialState = List([]);
 

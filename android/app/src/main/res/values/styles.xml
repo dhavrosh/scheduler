@@ -3,7 +3,10 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">#4682b4</item>
-        <item name="colorControlActivated">#4682b4</item>
+        <item name="android:timePickerDialogTheme">@style/Dialog.Theme</item>
     </style>
-
+    <style name="Dialog.Theme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">#4682b4</item>
+        <item name="android:textColorPrimary">#4682b4</item>
+    </style>
 </resources>

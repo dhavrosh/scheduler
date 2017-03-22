@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   Button,
   Text,
+  ScrollView,
   View,
   NativeModules,
   NativeAppEventEmitter,
@@ -56,7 +57,7 @@ const DashboardView = React.createClass({
     tomorrow.setDate(tomorrow.getDate() + 1);
 
     return (
-        <View style={[styles.container, isClassesEmpty && styles.containerCenter]}>
+        <ScrollView style={[styles.container, isClassesEmpty && styles.containerCenter]}>
 
         { !isClassesEmpty &&
           <View>
@@ -79,7 +80,7 @@ const DashboardView = React.createClass({
           </View>
           || <Text>There no any coming classes</Text>
         }
-      </View>
+      </ScrollView>
     );
   }
 });
